@@ -4,7 +4,12 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.lang.module.ModuleDescriptor.Exports;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -13,6 +18,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class file_selector extends JFrame implements ActionListener{
+	int response1;
+	int response2;
+	String file1;
 	
 		JButton button1;
 		JButton button2;
@@ -49,7 +57,7 @@ public class file_selector extends JFrame implements ActionListener{
 			JFileChooser fileChooser = new JFileChooser();
 			
 			
-			int response1 = fileChooser.showOpenDialog(null);
+			response1 = fileChooser.showOpenDialog(null);
 			
 			if(response1 == JFileChooser.APPROVE_OPTION) {
 				File file =new File(fileChooser.getSelectedFile().getAbsolutePath());
@@ -61,15 +69,51 @@ public class file_selector extends JFrame implements ActionListener{
 			JFileChooser fileChooser = new JFileChooser();
 			
 			
-			int response2 = fileChooser.showOpenDialog(null);
+			response2 = fileChooser.showOpenDialog(null);
 			
 			if(response2 == JFileChooser.APPROVE_OPTION) {
-				File file =new File(fileChooser.getSelectedFile().getAbsolutePath());
-				System.out.print(file);
-			}
-			
+				File file1 =new File(fileChooser.getSelectedFile().getAbsolutePath());
+				System.out.println(file1);
+				
+		        // arraylist to store strings
+		        List<String> listOfStrings
+		            = new ArrayList<String>();
+		       
+		        // load content of file based on specific delimiter
+		        Scanner sc = null;
+				try {
+					sc = new Scanner(new FileReader(file1))
+					                 .useDelimiter(",\\s*");
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+		        String str;
+		       
+		        // checking end of file
+		        while (sc.hasNext()) {
+		            str = sc.next();
+		           
+		            // adding each string to arraylist
+		            listOfStrings.add(str);
+		        }
+		       
+		        // convert any arraylist to array
+		        String[] array
+		            = listOfStrings.toArray(new String[0]);
+		       
+		        // print each string in array
+		        for (String eachString : array) {
+		            System.out.println(eachString);
+		        }
+		    }
 		}
-		
-	}
+		if(e.getSource()==button3) {
+			 Scanner sc = null;
+				
+		}}}
+			
+				
 
-}
+
+		

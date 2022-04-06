@@ -6,7 +6,6 @@ Additional Features:
 Showing the words around the searched term.
 Author: George Ciobanu (C20363281)
  */
-
 package assigment;
 
 import java.awt.Color;
@@ -42,7 +41,7 @@ public class file_selector extends JFrame implements ActionListener{
 	JButton button2;
 	JTextField textfield1;
 	JButton button3;
-//GUI for the user interface
+	//GUI for the user interface
 	public void file_selector1(){
 		GUI=new JFrame("My Search Engine");
 		panel = new JPanel(null);
@@ -69,13 +68,13 @@ public class file_selector extends JFrame implements ActionListener{
 		GUI.setSize(400,300);
 		GUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GUI.setLocationRelativeTo(null);
-	}
-	
+	}	
 public void actionPerformed(ActionEvent e) {
 	//Selecting the first file.
 	if(e.getSource()==button1) 
 {		
 		//GUI menu
+		one=null;
 		JFileChooser fileChooser = new JFileChooser();
 		response1 = fileChooser.showOpenDialog(null);
 			
@@ -98,14 +97,10 @@ public void actionPerformed(ActionEvent e) {
 		        // adding each string to arraylist
 		        listOfStrings.add(str);}
 		       
-		    // convert any arraylist to array
-		    String[] array= listOfStrings.toArray(new String[0]);
-		        
-		       
-		    // print each string in array
-	        for (String eachString : array) {
-	           one=one+eachString;
-	        }
+		    // convert the arraylist to string
+		    one= listOfStrings.toString();
+		    
+		    //Checking to see if the file selected is empty.
 	        if (one!=null)
 	        	System.out.println("A file which is not empty has been selected");
 	        else
@@ -113,9 +108,10 @@ public void actionPerformed(ActionEvent e) {
 }	
 		
 	if(e.getSource()==button2) {
-			two=null;
-			JFileChooser fileChooser = new JFileChooser();
-			response2 = fileChooser.showOpenDialog(null);
+		//GUI menu
+		two=null;
+		JFileChooser fileChooser = new JFileChooser();
+		response2 = fileChooser.showOpenDialog(null);
 			
 			if(response2 == JFileChooser.APPROVE_OPTION) {
 				File file2 =new File(fileChooser.getSelectedFile().getAbsolutePath());
@@ -136,13 +132,10 @@ public void actionPerformed(ActionEvent e) {
 		            // adding each string to arraylist
 		            listOfStrings.add(str);}
 		       
-		        // convert any arraylist to array
-		        String[] array= listOfStrings.toArray(new String[0]);
-		       
-		        // print each string in array
-		        for (String eachString : array) {
-		            two=two+eachString;
-		        }
+		        // convert the arraylist to a string
+		        two= listOfStrings.toString();
+		        
+		        //Checking to see if the file selected is empty.
 		        if (two!=null)
 		        	System.out.println("A file which is not empty has been selected");
 		        else
@@ -154,36 +147,39 @@ if(e.getSource()==button3) {
 	int count1=0;
 	int count2=0;
 	search=textfield1.getText();
-			
+	
+	//checking if the inputer term is in the file
 	try {
+		//Checking for the first file
 		if (one.contains(search)) {
 			System.out.println("\n\nMatches from the first file");
-				
-			String[] sp = one.split(" +"); // "+" for multiple spaces
-
-		    String[] spMulti = search.split(" +"); // "+" for multiple spaces
+			String[] sp = one.split(" +"); // Dividing the file by finding spaces between the words
+		    String[] search2 = search.split(" +"); // Finding if there is one or multiple words entered in the search menu
+		    
 			    for (int i = 0; i < sp.length; i++) {
 			    	int j = 0;
-			        while (j < spMulti.length && i+j < sp.length && sp[i+j].equals(spMulti[j])) 
+			        while (j < search2.length && i+j < sp.length && sp[i+j].equals(search2[j])) 
 			        {j++;}           
-			        if (j == spMulti.length) { // found spMulti entirely
-			        	StringBuilder surr = new StringBuilder();
-				            if (i-2 > 0){ surr.append(sp[i-2]); surr.append(" "); }
-				            if (i-1 > 0){ surr.append(sp[i-1]); surr.append(" "); }
-				            for (int k = 0; k < spMulti.length; k++) {
-			                if (k > 0){ surr.append(" "); }
-				                surr.append(sp[i+k]);
+			        if (j == search2.length) {  // found matching words
+			        	
+			        	//Loop to print the words around the searched word.
+			        	StringBuilder word = new StringBuilder();
+				            if (i-2 > 0){ word.append(sp[i-2]); word.append(" "); }
+				            if (i-1 > 0){ word.append(sp[i-1]); word.append(" "); }
+				            for (int k = 0; k < search2.length; k++) {
+			                if (k > 0){ word.append(" "); }
+				                word.append(sp[i+k]);
 				            }
-				            if (i+spMulti.length < sp.length) {
-				                surr.append(" ");
-				                surr.append(sp[i+spMulti.length]);
+				            if (i+search2.length < sp.length) {
+				                word.append(" ");
+				                word.append(sp[i+search2.length]);
 				            }
-				            if (i+spMulti.length+1 < sp.length) {
-				                surr.append(" ");
-				                surr.append(sp[i+spMulti.length+1]);
+				            if (i+search2.length+1 < sp.length) {
+				                word.append(" ");
+				                word.append(sp[i+search2.length+1]);
 				            }
-				            System.out.println(surr.toString());
-				            count1=count1 +1;
+				            System.out.println(word.toString());
+				            count1=count1 +1;//calculating the total amount of finds.
 				        }
 				    }
 			}
@@ -196,32 +192,33 @@ if(e.getSource()==button3) {
 	try {
 		if (two.contains(search)) {
 			System.out.println("\n\nMatches from the second file");
-
-		    String[] sp = two.split(" +"); // "+" for multiple spaces
-
-		    String[] spMulti = search.split(" +"); // "+" for multiple spaces
+		    String[] sp = two.split(" +"); // Dividing the file by finding spaces between the words
+		    String[] search2 = search.split(" +"); // Finding if there is one or multiple words entered in the search menu
+		    
 			    for (int i = 0; i < sp.length; i++) {
 			        int j = 0;
-			        while (j < spMulti.length && i+j < sp.length && sp[i+j].equals(spMulti[j])) 
+			        while (j < search2.length && i+j < sp.length && sp[i+j].equals(search2[j])) 
 			        {j++;}           
-			        if (j == spMulti.length) { // found spMulti entirely
-	            	StringBuilder surr = new StringBuilder();
-			            if (i-2 > 0){ surr.append(sp[i-2]); surr.append(" "); }
-			            if (i-1 > 0){ surr.append(sp[i-1]); surr.append(" "); }
-			            for (int k = 0; k < spMulti.length; k++) {
-			                if (k > 0){ surr.append(" "); }
-		                		surr.append(sp[i+k]);
+			        if (j == search2.length) { // found matching words
+			        	
+			        //Loop to print the words around the searched word.
+	            	StringBuilder word = new StringBuilder();
+			            if (i-2 > 0){ word.append(sp[i-2]); word.append(" "); }
+			            if (i-1 > 0){ word.append(sp[i-1]); word.append(" "); }
+			            for (int k = 0; k < search2.length; k++) {
+			                if (k > 0){ word.append(" "); }
+		                		word.append(sp[i+k]);
 				            }
-				            if (i+spMulti.length < sp.length) {
-				                surr.append(" ");
-				                surr.append(sp[i+spMulti.length]);
+				            if (i+search2.length < sp.length) {
+				                word.append(" ");
+				                word.append(sp[i+search2.length]);
 				            }
-				            if (i+spMulti.length+1 < sp.length) {
-				                surr.append(" ");
-				                surr.append(sp[i+spMulti.length+1]);		                
+				            if (i+search2.length+1 < sp.length) {
+				                word.append(" ");
+				                word.append(sp[i+search2.length+1]);		                
 				            }
-				            System.out.println(surr.toString());
-				            count2=count2 +1;
+				            System.out.println(word.toString());
+				            count2=count2 +1;//calculating the total amount of finds.
 				        }
 				    }
 			}
@@ -231,12 +228,12 @@ if(e.getSource()==button3) {
 catch (Exception f2) {
 	System.out.println("Second file not selected");
 }
-			
+	//Checking if any matches have been found
 	if ( textfield1.getText().isBlank() || textfield1.getText().equals("Please enter you word")) {
 		System.out.println("You havent enter a search word");}
 
 	else
-		if(count1==0 ||count2==0) {
+		if(count1==0 && count2==0) {
 			System.out.println("\nThe word which you have enter doesnt have any matches");
 		}
 		else if (count1>count2 && count1!=count2) {
@@ -248,5 +245,4 @@ catch (Exception f2) {
 		else 
 		System.out.println("\nBoth files have the same amount of matches");
 }
-
 }}			

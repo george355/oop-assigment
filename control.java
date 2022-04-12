@@ -14,14 +14,6 @@ public class control {
 		
 
 		
-
-		
-		
-		
-		
-		
-		
-	      
 }
 }
 
